@@ -165,13 +165,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // CAPTURA O CAMINHO ATUAL DA URL DA DASHBOARD
         // Isso descobre se você está usando http://127.0.0.1 ou file:///C:/...
-        const currentPath = window.location.href;
+        // Captura a URL atual da barra de endereços do navegador
+        const currentUrl = window.location.href;
 
-        // Remove o "dashboard.html" do final do endereço para pegar a pasta raiz "Projeto"
-        const basePath = currentPath.substring(0, currentPath.lastIndexOf('/'));
-
-        // Monta o link final juntando a raiz com a localização exata da pasta mapeada no seu print
+        // Descobre a pasta atual removendo o "dashboard.html" do final de forma automática
         const basePath = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+
+        // Monta o link apontando para a pasta interna correta (tudo minúsculo: testes/disc)
+        const testUrl = `${basePath}/testes/disc/disc.html?id=${newAssessment.id}`;
         // ELEMENTOS DA CAIXA DE LINK
         const linkBox = document.getElementById("link-container-box");
         const urlInput = document.getElementById("generated-url-input");
