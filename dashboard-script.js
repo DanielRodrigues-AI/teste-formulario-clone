@@ -257,19 +257,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 // ATUALIZADO: Abre a página do relatório em uma nova aba passando o ID por URL
+// CORRIGIDO: Abre a nova página estruturada baseada na sua árvore de pastas real
     window.viewResult = function (assessmentId) {
-        // Captura o local atual (projeto/)
         const currentUrl = window.location.href;
+        
+        // Remove o "index.html" ou a barra do final para pegar a pasta raiz "PROJETO"
         const basePath = currentUrl.endsWith('/') 
             ? currentUrl.slice(0, -1) 
             : currentUrl.substring(0, currentUrl.lastIndexOf('/'));
 
-        // Constrói o caminho correto para o relatorio.html
-        const reportUrl = `${basePath}/testes/disc/relatorio.html?id=${assessmentId}`;
+        // Monta o caminho exato apontando para a pasta "relatorio/relatorio.html" que está no print
+        const reportUrl = `${basePath}/relatorio/relatorio.html?id=${assessmentId}`;
         
-        // Abre em uma nova aba
+        // Abre o relatório em uma aba cheia e limpa do navegador
         window.open(reportUrl, '_blank');
     };
-
+// ATUALIZAÇÃO EM TEMPO REAL: Escuta o envio do teste em outra aba e atualiza o painel
+    window.addEventListener("storage", (event) => {
+        if (event.key === "dashboard_assessments") {
+            // Recarrega o estado interno com os novos dados enviados pelo cliente
+            state.assessments = JSON.parse(event.newValue) || [];
+            // Re-renderiza a tabela de avaliações na tela instantaneamente
+            renderAssessments();
+        }
+    });
     init();
 });
