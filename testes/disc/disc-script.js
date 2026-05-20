@@ -225,14 +225,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    function finalizeAssessment() {
-        // Envia os dados de volta para a base do dashboard (simulando salvamento no Supabase)
+   function finalizeAssessment() {
         const activeAssessments = JSON.parse(localStorage.getItem("dashboard_assessments")) || [];
         const index = activeAssessments.findIndex(a => a.id === assessmentId);
 
         if (index !== -1) {
+            // ==========================================
+            // CÁLCULO DINÂMICO DOS PONTOS DISC
+            // ==========================================
+            const scores = { D: 0, I: 0, S: 0, C: 0 };
+
+            // Percorre cada bloco respondido pelo usuário e soma os pontos
+            Object.values(userAnswers).forEach(ans => {
+                // Quem ele marcou como MAIS ganha +1 ponto no vetor correspondente
+                if (ans.mais && scores[ans.mais] !== undefined) {
+                    scores[ans.mais]++;
+                }
+                // (Opcional) Se quiser pontuar o "MENOS", pode adicionar lógica aqui.
+                // Para simplificar o gráfico clássico, contamos os fatores dominantes (MAIS).
+            });
+
+            // Altera o status e salva o objeto consolidado com os pontos somados
             activeAssessments[index].status = "Respondido";
-            activeAssessments[index].answers = userAnswers;
+            activeAssessments[index].answers = scores; // Salva { D: X, I: Y, S: Z, C: W }
+            
             localStorage.setItem("dashboard_assessments", JSON.stringify(activeAssessments));
 
             // Oculta o formulário de perguntas
@@ -243,9 +259,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const resultMessage = document.getElementById("result-message");
             resultBox.classList.remove("hidden");
 
-            // SE HABILITADO OPÇÃO MOSTRAR RESULTADO NO DASHBOARD: O cliente vê o perfil dele em tela na hora
+            // Define qual é o maior fator para mostrar na tela se o analista liberou
+            const perfilDominante = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            const nomesPerfil = { D: "Dominância (D)", I: "Influência (I)", S: "Estabilidade (S)", C: "Conformidade (C)" };
+
             if (activeAssessments[index].showResultToClient) {
-                resultMessage.innerHTML = `Sua avaliação foi processada! Seu perfil dominante mapeado foi: <strong>Dominância (D) • Executor</strong>. Uma análise detalhada foi enviada ao seu profissional responsável.`;
+                resultMessage.innerHTML = `Sua avaliação foi processada! Seu perfil predominante mapeado foi: <strong>${nomesPerfil[perfilDominante]}</strong>. Uma análise detalhada foi enviada ao seu profissional responsável.`;
             } else {
                 resultMessage.innerHTML = `Sua avaliação foi enviada com sucesso! Os resultados foram encaminhados diretamente ao painel do seu analista responsável.`;
             }

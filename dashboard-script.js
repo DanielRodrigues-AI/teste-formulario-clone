@@ -256,11 +256,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+// ATUALIZADO: Abre a página do relatório em uma nova aba passando o ID por URL
     window.viewResult = function (assessmentId) {
-        const target = state.assessments.find(a => a.id === assessmentId);
-        if (target) {
-            alert(`REMANESCENTE DA ANÁLISE — PSICO Corporation\n\nCliente: ${target.clientName}\nAvaliação: ${target.testName}\n\nRespostas brutas capturadas do formulário:\n` + JSON.stringify(target.answers, null, 2));
-        }
+        // Captura o local atual (projeto/)
+        const currentUrl = window.location.href;
+        const basePath = currentUrl.endsWith('/') 
+            ? currentUrl.slice(0, -1) 
+            : currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+
+        // Constrói o caminho correto para o relatorio.html
+        const reportUrl = `${basePath}/testes/disc/relatorio.html?id=${assessmentId}`;
+        
+        // Abre em uma nova aba
+        window.open(reportUrl, '_blank');
     };
 
     init();
