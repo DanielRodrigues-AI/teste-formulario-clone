@@ -1,44 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Perfil Comportamental - DISC</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Resultado da Avaliação DISC — Know Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 p-6">
-    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md border border-slate-100 p-8">
-        <header class="border-b border-slate-100 pb-6 mb-6">
-            <h1 class="text-2xl font-bold text-slate-900">Análise de Perfil Comportamental</h1>
-            <p class="text-sm text-slate-500 mt-1">Metodologia DISC — PSICO Corporation</p>
+
+<body class="min-h-screen bg-slate-50 text-slate-800 p-4 md:p-8">
+
+    <div class="mx-auto max-w-4xl space-y-6">
+        
+        <header class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Análise de Perfil Comportamental</h1>
+                <p class="text-sm text-slate-500 mt-1">Plataforma de Desenvolvimento Humano — Know Academy</p>
+            </div>
+            <div class="text-left sm:text-right">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Avaliado</span>
+                <p id="client-name-title" class="text-lg font-bold text-slate-800">-</p>
+                <p id="test-name-subtitle" class="text-xs text-slate-500">-</p>
+            </div>
         </header>
 
-        <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-lg mb-6">
-            <div>
-                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Cliente</span>
-                <p id="rep-client-name" class="font-bold text-slate-800">-</p>
+        <div id="main-profile-card" class="rounded-lg border-2 bg-gradient-to-br p-6 shadow-sm transition-all">
+            <div class="flex flex-col space-y-1.5 pb-2">
+                <div class="flex items-center gap-3 mb-2">
+                    <div id="profile-emoji" class="text-4xl">🧬</div>
+                    <div>
+                        <div id="profile-badge" class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold text-white text-sm mb-1">
+                            Perfil Comportamental
+                        </div>
+                        <h3 id="profile-title" class="font-bold tracking-tight text-2xl text-slate-900">Carregando...</h3>
+                        <p id="profile-subtitle" class="text-slate-500 text-sm">Análise de Vetor Dominante</p>
+                    </div>
+                </div>
             </div>
-            <div>
-                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tipo de Avaliação</span>
-                <p id="rep-test-name" class="font-medium text-slate-600">-</p>
+            <div class="pt-2 space-y-3">
+                <p id="profile-description" class="text-sm leading-relaxed text-slate-700">Processando as respostas do questionário...</p>
             </div>
         </div>
 
-        <section>
-            <h2 class="text-lg font-bold text-slate-900 mb-4">Pontuação por Vetor</h2>
-            
-            <div class="space-y-4" id="results-bars-container">
-                <p class="text-sm text-slate-400">Carregando resultados...</p>
-            </div>
-        </section>
+        <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
+                <span>📊</span> Gráfico de Distribuição do Perfil (%)
+            </h3>
+            <div class="space-y-4" id="bars-chart-container">
+                </div>
+        </div>
 
-        <footer class="mt-8 pt-6 border-t border-slate-100 text-center">
-            <button onclick="window.close()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold rounded-lg transition-colors">
-                Fechar Relatório
-            </button>
+        <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="font-bold text-lg text-slate-900 mb-4">💬 Dinâmicas Comportamentais do Perfil</h3>
+            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                <div class="rounded-lg border p-4 bg-slate-50/50">
+                    <p class="font-bold text-slate-800 mb-1">🗣️ Comunicação</p>
+                    <p id="dyn-com" class="text-slate-600">-</p>
+                </div>
+                <div class="rounded-lg border p-4 bg-slate-50/50">
+                    <p class="font-bold text-slate-800 mb-1">🎯 Tomada de Decisão</p>
+                    <p id="dyn-dec" class="text-slate-600">-</p>
+                </div>
+                <div class="rounded-lg border p-4 bg-slate-50/50">
+                    <p class="font-bold text-slate-800 mb-1">👑 Estilo de Liderança</p>
+                    <p id="dyn-lid" class="text-slate-600">-</p>
+                </div>
+                <div class="rounded-lg border p-4 bg-slate-50/50">
+                    <p class="font-bold text-slate-800 mb-1">💡 Força de Motivação</p>
+                    <p id="dyn-mot" class="text-slate-600">-</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="mb-4">
+                <h3 class="font-bold text-lg text-slate-900">📋 Matriz Comparativa de Traços DISC</h3>
+                <p class="text-sm text-slate-500">Visão cruzada das dimensões da metodologia comportamental</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50">
+                            <th class="py-3 px-3 font-bold text-slate-700">Aspecto</th>
+                            <th class="text-center py-3 px-2 font-bold text-red-600">🦁 Dominância (D)</th>
+                            <th class="text-center py-3 px-2 font-bold text-amber-500">🦋 Influência (I)</th>
+                            <th class="text-center py-3 px-2 font-bold text-green-600">🐢 Estabilidade (S)</th>
+                            <th class="text-center py-3 px-2 font-bold text-blue-600">🦉 Conformidade (C)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-600">
+                        <tr>
+                            <td class="py-3 px-3 font-semibold bg-slate-50/50">Foco Principal</td>
+                            <td class="text-center p-3 bg-red-50/30 font-medium">Resultados e Metas</td>
+                            <td class="text-center p-3 bg-amber-50/30">Pessoas e Relações</td>
+                            <td class="text-center p-3 bg-green-50/30">Processos e Paz</td>
+                            <td class="text-center p-3 bg-blue-50/30">Dados e Precisão</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-3 font-semibold bg-slate-50/50">Sob Pressão...</td>
+                            <td class="text-center p-3 bg-red-50/30">Torna-se Ditatorial</td>
+                            <td class="text-center p-3 bg-amber-50/30">Fica Superficial</td>
+                            <td class="text-center p-3 bg-green-50/30">Torna-se Resistente</td>
+                            <td class="text-center p-3 bg-blue-50/30">Fica Ultra Crítico</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-3 font-semibold bg-slate-50/50">Maior Medo</td>
+                            <td class="text-center p-3 bg-red-50/30">Falhar / Perder Controle</td>
+                            <td class="text-center p-3 bg-amber-50/30">Rejeição Social</td>
+                            <td class="text-center p-3 bg-green-50/30">Mudanças Bruscas</td>
+                            <td class="text-center p-3 bg-blue-50/30">Estar Errado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="text-center pb-8">
+            <p id="report-date" class="text-xs text-slate-400">Concluído em: --/--/----</p>
         </footer>
+
     </div>
 
     <script src="relatorio-script.js"></script>
 </body>
+
 </html>
