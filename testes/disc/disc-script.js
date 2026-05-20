@@ -19,7 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 17, words: [{ text: "Resoluto", type: "D" }, { text: "Encantador", type: "I" }, { text: "Tolerante", type: "S" }, { text: "Lógico", type: "C" }] },
         { id: 18, words: [{ text: "Pragmático", type: "D" }, { text: "Criativo", type: "I" }, { text: "Receptivo", type: "S" }, { text: "Investigativo", type: "C" }] },
         { id: 19, words: [{ text: "Objetivo", type: "D" }, { text: "Divertido", type: "I" }, { text: "Harmonioso", type: "S" }, { text: "Minucioso", type: "C" }] },
-        { id: 20, words: [{ text: "Realizador", type: "D" }, { text: "Popular", type: "I" }, { text: "Prestativo", type: "S" }, { text: "Convencional", type: "C" }] }
+        { id: 20, words: [{ text: "Realizador", type: "D" }, { text: "Popular", type: "I" }, { text: "Prestativo", type: "S" }, { text: "Convencional", type: "C" }] },
+        { id: 21, words: [{ text: "Competente", type: "C" }, { text: "Acolhedor", type: "S" }, { text: "Animado", type: "I" }, { text: "Direto", type: "D" }] },
+        { id: 22, words: [{ text: "Exato", type: "C" }, { text: "Atencioso", type: "S" }, { text: "Persuasivo", type: "I" }, { text: "Persistente", type: "D" }] },
+        { id: 23, words: [{ text: "Criterioso", type: "C" }, { text: "Gentil", type: "S" }, { text: "Influente", type: "I" }, { text: "Corajoso", type: "D" }] },
+        { id: 24, words: [{ text: "Minucioso", type: "C" }, { text: "Harmonioso", type: "S" }, { text: "Divertido", type: "I" }, { text: "Objetivo", type: "D" }] },
+        { id: 25, words: [{ text: "Sistemático", type: "C" }, { text: "Amigável", type: "S" }, { text: "Expressivo", type: "I" }, { text: "Enérgico", type: "D" }] }
     ];
 
     let currentPage = 0;
@@ -198,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btnPrev.removeAttribute("disabled");
         }
 
-        if (currentPage === 3) {
+        if (currentPage === 4) {
             btnNext.textContent = "Enviar Teste DISC";
         } else {
             btnNext.textContent = "Próximo";
@@ -225,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-   function finalizeAssessment() {
+    function finalizeAssessment() {
         const activeAssessments = JSON.parse(localStorage.getItem("dashboard_assessments")) || [];
         const index = activeAssessments.findIndex(a => a.id === assessmentId);
 
@@ -248,12 +253,12 @@ document.addEventListener("DOMContentLoaded", () => {
             // Altera o status e salva o objeto consolidado com os pontos somados
             activeAssessments[index].status = "Respondido";
             activeAssessments[index].answers = scores; // Salva { D: X, I: Y, S: Z, C: W }
-            
+
             localStorage.setItem("dashboard_assessments", JSON.stringify(activeAssessments));
 
             // Oculta o formulário de perguntas
             document.getElementById("test-box").classList.add("hidden");
-            
+
             // Exibe a tela de agradecimento final
             const resultBox = document.getElementById("result-box");
             const resultMessage = document.getElementById("result-message");

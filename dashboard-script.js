@@ -258,18 +258,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ATUALIZADO: Abre a página do relatório em uma nova aba passando o ID por URL
 // CORRIGIDO: Abre a nova página estruturada baseada na sua árvore de pastas real
+// VERSÃO DEFINITIVA: Constrói o caminho sem errar barras no GitHub Pages
     window.viewResult = function (assessmentId) {
-        const currentUrl = window.location.href;
+        // Pega o endereço base do site (Ex: https://danielrodrigues-ai.github.io/teste-formulario-clone/)
+        const origin = window.location.origin;
+        const pathSegments = window.location.pathname.split('/');
         
-        // Remove o "index.html" ou a barra do final para pegar a pasta raiz "PROJETO"
-        const basePath = currentUrl.endsWith('/') 
-            ? currentUrl.slice(0, -1) 
-            : currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+        // Pega o nome do repositório (segundo segmento da URL)
+        const repoName = pathSegments[1]; 
 
-        // Monta o caminho exato apontando para a pasta "relatorio/relatorio.html" que está no print
-        const reportUrl = `${basePath}/relatorio/relatorio.html?id=${assessmentId}`;
+        // Monta a URL apontando direto para a pasta do relatório de forma limpa
+        const reportUrl = `${origin}/${repoName}/projeto/relatorio/relatorio.html?id=${assessmentId}`;
         
-        // Abre o relatório em uma aba cheia e limpa do navegador
+        // Abre o relatório na nova aba
         window.open(reportUrl, '_blank');
     };
 // ATUALIZAÇÃO EM TEMPO REAL: Escuta o envio do teste em outra aba e atualiza o painel
