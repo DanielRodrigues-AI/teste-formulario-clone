@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     btnNext.addEventListener("click", () => {
-        if (currentPage < 3) {
+        if (currentPage < 4) {
             currentPage++;
             renderPage();
             window.scrollTo(0, 0);
