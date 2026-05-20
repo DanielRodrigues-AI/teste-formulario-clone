@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalQuestions = 25;
     const userAnswers = {};
 
-    // Captura o ID da avaliação passada via parâmetro URL (?id=ass_...)
     const urlParams = new URLSearchParams(window.location.search);
     const assessmentId = urlParams.get('id');
 
@@ -43,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnNext = document.getElementById("btn-next");
     const greetingTitle = document.getElementById("client-greeting-title");
 
-    // Tenta identificar o cliente com base no estado do dashboard para saudação
     const dbAssessments = JSON.parse(localStorage.getItem("dashboard_assessments")) || [];
     const currentAssessment = dbAssessments.find(a => a.id === assessmentId);
 
@@ -97,7 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
             blockDiv.innerHTML = tableHTML;
             container.appendChild(blockDiv);
 
-            // Restaura respostas anteriores na navegação de abas
             if (userAnswers[`block_${q.id}`]) {
                 const ans = userAnswers[`block_${q.id}`];
                 if (ans.mais) applyVisualSelection(q.id, ans.mais, "mais");
@@ -122,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
             targetBtn.className = "h-6 w-6 rounded-full border-2 transition-all mx-auto block bg-red-500 border-red-500";
         }
 
-        // BLOQUEIO CIRÚRGICO DA MESMA LINHA: Impede clique e muda cursor para "not-allowed"
         oppositeBtn.setAttribute("disabled", "true");
         oppositeBtn.className = "h-6 w-6 rounded-full border-2 border-slate-200 bg-slate-100 opacity-40 mx-auto block cursor-not-allowed";
     }
@@ -137,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         targetBtn.className = `h-6 w-6 rounded-full border-2 border-slate-300 transition-all mx-auto block hover:border-${selectionType === 'mais' ? 'green' : 'red'}-500 focus:outline-none`;
 
-        // Desbloqueia a linha restaurando o cursor padrão de clique
         oppositeBtn.removeAttribute("disabled");
         oppositeBtn.className = `h-6 w-6 rounded-full border-2 border-slate-300 transition-all mx-auto block hover:border-${selectionType === 'mais' ? 'red' : 'green'}-500 focus:outline-none`;
     }
@@ -235,44 +230,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const index = activeAssessments.findIndex(a => a.id === assessmentId);
 
         if (index !== -1) {
-            // ==========================================
-            // CÁLCULO DINÂMICO DOS PONTOS DISC
-            // ==========================================
             const scores = { D: 0, I: 0, S: 0, C: 0 };
 
-            // Percorre cada bloco respondido pelo usuário e soma os pontos
             Object.values(userAnswers).forEach(ans => {
-                // Quem ele marcou como MAIS ganha +1 ponto no vetor correspondente
                 if (ans.mais && scores[ans.mais] !== undefined) {
                     scores[ans.mais]++;
                 }
-                // (Opcional) Se quiser pontuar o "MENOS", pode adicionar lógica aqui.
-                // Para simplificar o gráfico clássico, contamos os fatores dominantes (MAIS).
             });
 
-            // Altera o status e salva o objeto consolidado com os pontos somados
             activeAssessments[index].status = "Respondido";
-            activeAssessments[index].answers = scores; // Salva { D: X, I: Y, S: Z, C: W }
+            activeAssessments[index].answers = scores;
 
             localStorage.setItem("dashboard_assessments", JSON.stringify(activeAssessments));
 
-            // Oculta o formulário de perguntas
             document.getElementById("test-box").classList.add("hidden");
 
-            // Exibe a tela de agradecimento final
             const resultBox = document.getElementById("result-box");
             const resultMessage = document.getElementById("result-message");
             resultBox.classList.remove("hidden");
 
-            // Define qual é o maior fator para mostrar na tela se o analista liberou
-            const perfilDominante = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-            const nomesPerfil = { D: "Dominância (D)", I: "Influência (I)", S: "Estabilidade (S)", C: "Conformidade (C)" };
-
-            if (activeAssessments[index].showResultToClient) {
-                resultMessage.innerHTML = `Sua avaliação foi processada! Seu perfil predominante mapeado foi: <strong>${nomesPerfil[perfilDominante]}</strong>. Uma análise detalhada foi enviada ao seu profissional responsável.`;
-            } else {
-                resultMessage.innerHTML = `Sua avaliação foi enviada com sucesso! Os resultados foram encaminhados diretamente ao painel do seu analista responsável.`;
-            }
+            resultMessage.innerHTML = `Sua avaliação foi enviada com sucesso! Os resultados foram encaminhados diretamente ao painel do seu analista responsável.`;
         } else {
             alert("Erro: ID de avaliação inválido ou não encontrado no sistema principal.");
         }

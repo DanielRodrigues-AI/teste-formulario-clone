@@ -152,25 +152,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 testId: test.id,
                 testName: test.name,
                 status: "Pendente",
-                showResultToClient: false,
                 answers: null
             };
 
             state.assessments.push(newAssessment);
             localStorage.setItem("dashboard_assessments", JSON.stringify(state.assessments));
 
-            // LÓGICA DE URL UNIVERSAL PARA INDEX.HTML
             const currentUrl = window.location.href;
-            
-            // Remove "index.html" ou barras sobressalentes do final automaticamente
             const basePath = currentUrl.endsWith('/') 
                 ? currentUrl.slice(0, -1) 
                 : currentUrl.substring(0, currentUrl.lastIndexOf('/'));
 
-            // Monta o link apontando direto para a pasta minúscula "testes/disc/disc.html"
             const testUrl = `${basePath}/testes/disc/disc.html?id=${newAssessment.id}`;
 
-            // ELEMENTOS DA CAIXA DE LINK
             const linkBox = document.getElementById("link-container-box");
             const urlInput = document.getElementById("generated-url-input");
             const btnCopy = document.getElementById("btn-copy-link");
@@ -209,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tableBody.innerHTML = "";
 
         if (state.assessments.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-sm text-slate-400 font-normal">Nenhuma avaliação disparada.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-sm text-slate-400 font-normal">Nenhuma avaliação disparada.</td></tr>`;
             return;
         }
 
@@ -227,12 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td class="py-3 px-2 font-semibold text-slate-900">${ass.clientName}</td>
                 <td class="py-3 px-2 text-sm text-slate-500">${ass.testName}</td>
                 <td class="py-3 px-2 text-center">${statusBadge}</td>
-                <td class="py-3 px-2 text-center">
-                    <label class="relative inline-flex items-center cursor-pointer mx-auto">
-                        <input type="checkbox" data-id="${ass.id}" class="sr-only peer" ${ass.showResultToClient ? 'checked' : ''}>
-                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                </td>
                 <td class="py-3 px-2 text-right">
                     <button class="text-xs font-bold text-blue-600 hover:text-blue-800 disabled:opacity-30" ${ass.status !== 'Respondido' ? 'disabled' : ''} onclick="viewResult('${ass.id}')">
                         Ver Relatório
@@ -240,39 +228,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 </td>
             `;
 
-            const checkbox = tr.querySelector('input[type="checkbox"]');
-            if (checkbox) {
-                checkbox.addEventListener('change', (event) => {
-                    const currentId = event.target.getAttribute('data-id');
-                    const targetAss = state.assessments.find(a => a.id === currentId);
-                    if (targetAss) {
-                        targetAss.showResultToClient = event.target.checked;
-                        localStorage.setItem("dashboard_assessments", JSON.stringify(state.assessments));
-                    }
-                });
-            }
-
             tableBody.appendChild(tr);
         });
     }
 
-// ATUALIZADO: Abre a página do relatório em uma nova aba passando o ID por URL
-// CORRIGIDO: Abre a nova página estruturada baseada na sua árvore de pastas real
-// VERSÃO DEFINITIVA: Constrói o caminho sem errar barras no GitHub Pages
-    // VERSÃO CORRETA: Entra em testes/ e depois em relatorio/ a partir da raiz do projeto
     window.viewResult = function (assessmentId) {
-        // Como o index.html está na raiz de PROJETO, entramos na pasta certa direto
         const reportUrl = `testes/relatorio/relatorio.html?id=${assessmentId}`;
-        
-        // Abre o relatório na nova aba perfeitamente
         window.open(reportUrl, '_blank');
     };
-// ATUALIZAÇÃO EM TEMPO REAL: Escuta o envio do teste em outra aba e atualiza o painel
+
     window.addEventListener("storage", (event) => {
         if (event.key === "dashboard_assessments") {
-            // Recarrega o estado interno com os novos dados enviados pelo cliente
             state.assessments = JSON.parse(event.newValue) || [];
-            // Re-renderiza a tabela de avaliações na tela instantaneamente
             renderAssessments();
         }
     });
