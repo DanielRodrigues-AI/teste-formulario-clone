@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Avaliação — PSICO Corporation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 p-4 md:p-8 text-slate-800">
+
+    <div class="mx-auto max-w-3xl">
+        <div class="rounded-lg border border-slate-200 bg-white p-6 text-center shadow-sm mb-6">
+            <h3 id="client-greeting-title" class="text-2xl font-bold tracking-tight text-slate-900">Formulário de Avaliação</h3>
+            <p id="client-greeting-desc" class="text-sm text-muted-foreground mt-1">Por favor, complete a avaliação comportamental abaixo.</p>
+        </div>
+
+        <div id="test-box" class="rounded-lg border border-slate-200 bg-white shadow-sm p-6 mb-6">
+            <div class="space-y-1.5 mb-6">
+                <h3 class="text-xl font-bold text-slate-900">Teste DISC</h3>
+                <p class="text-sm text-slate-500">
+                    Para cada grupo de 4 palavras, selecione a que <strong>MAIS</strong> descreve você e a que <strong>MENOS</strong> descreve você.
+                </p>
+            </div>
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="relative h-4 w-full overflow-hidden rounded-full bg-slate-100 flex-1">
+                    <div id="progress-bar" class="h-full bg-blue-600 transition-all duration-300 w-0"></div>
+                </div>
+                <span id="progress-text" class="text-sm text-slate-500 font-medium">0 / 25</span>
+            </div>
+
+            <form id="disc-form" class="space-y-6">
+                <div id="questions-container" class="space-y-6">
+                    </div>
+
+                <div class="flex justify-between mt-8 pt-4 border-t border-slate-100">
+                    <button type="button" id="btn-prev" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 h-10 px-4 py-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Anterior
+                    </button>
+                    <button type="button" id="btn-next" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white h-10 px-4 py-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Próximo
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="result-box" class="hidden rounded-lg border-2 border-green-500 bg-white p-6 text-center shadow-lg space-y-4">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600 text-xl font-bold">✓</div>
+            <h2 class="text-2xl font-bold text-slate-900">Avaliação Concluída!</h2>
+            <p id="result-message" class="text-slate-600 max-w-md mx-auto">Obrigado por responder. Seus dados já foram computados e enviados ao seu analista.</p>
+        </div>
+    </div>
+
+    <script src="disc-script.js"></script>
+</body>
+</html>
